@@ -102,18 +102,20 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Quản lý nhân sự'),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          search(context, _onSearchChanged), // Thanh tìm kiếm
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: EmployeeList(
-              employees: filteredEmployees, // Hiển thị danh sách đã lọc
-              onDelete: _deleteEmployee,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            search(context, _onSearchChanged), // Thanh tìm kiếm
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: EmployeeList(
+                employees: filteredEmployees, // Hiển thị danh sách đã lọc
+                onDelete: _deleteEmployee,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addEmployee,

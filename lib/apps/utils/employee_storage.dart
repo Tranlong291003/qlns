@@ -18,8 +18,14 @@ class EmployeeStorage {
   static Future<List<Employee>> loadEmployees() async {
     final prefs = await SharedPreferences.getInstance();
     List<String> employeeList = prefs.getStringList(_key) ?? [];
+
     return employeeList.map((e) {
       List<String> fields = e.split(',');
+
+      // Kiểm tra và chuyển đổi an toàn cho DateTime
+      DateTime? createdAt = _parseDate(fields[6]);
+      DateTime? updatedAt = _parseDate(fields[7]);
+
       return Employee(
         id: int.parse(fields[0]),
         fullName: fields[1],
@@ -27,9 +33,21 @@ class EmployeeStorage {
         email: fields[3],
         contractType: fields[4],
         positions: fields[5].split(','),
-        createdAt: DateTime.parse(fields[6]),
-        updatedAt: DateTime.parse(fields[7]),
+        createdAt:
+            createdAt ?? DateTime.now(), // Nếu không hợp lệ, dùng ngày hiện tại
+        updatedAt:
+            updatedAt ?? DateTime.now(), // Nếu không hợp lệ, dùng ngày hiện tại
       );
     }).toList();
+  }
+
+  // Hàm giúp kiểm tra và chuyển đổi chuỗi thành DateTime hợp lệ
+  static DateTime? _parseDate(String dateString) {
+    try {
+      return DateTime.tryParse(dateString);
+    } catch (e) {
+      print('Lỗi khi chuyển đổi ngày: $e');
+      return null; // Nếu không hợp lệ, trả về null
+    }
   }
 }
