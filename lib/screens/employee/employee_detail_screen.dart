@@ -14,46 +14,51 @@ class EmployeeDetailScreen extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Họ và tên:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blueAccent,
+      body: Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Họ và tên:',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blueAccent,
+                      ),
                     ),
-                  ),
-                  Text(
-                    employee.fullName,
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                    Text(
+                      employee.fullName,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 15),
-                  _buildDetailRow('Email:', employee.email),
-                  _buildDetailRow('Số điện thoại:', employee.phone),
-                  _buildDetailRow('Loại hợp đồng:', employee.contractType),
-                  _buildDetailRow('Vị trí:', employee.positions.join(', ')),
-                  const SizedBox(height: 20),
-                  _buildDetailRow('Ngày tạo:', _formatDate(employee.createdAt)),
-                  _buildDetailRow(
-                    'Ngày cập nhật:',
-                    _formatDate(employee.updatedAt),
-                  ),
-                ],
+                    const SizedBox(height: 15),
+                    _buildDetailRow('Email:', employee.email),
+                    _buildDetailRow('Số điện thoại:', employee.phone),
+                    _buildDetailRow('Loại hợp đồng:', employee.contractType),
+                    _buildDetailRow('Vị trí:', employee.positions.join(', ')),
+                    const SizedBox(height: 20),
+                    _buildDetailRow(
+                      'Ngày tạo:',
+                      _formatDate(employee.createdAt),
+                    ),
+                    _buildDetailRow(
+                      'Ngày cập nhật:',
+                      _formatDate(employee.updatedAt),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

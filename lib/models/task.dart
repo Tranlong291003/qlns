@@ -20,7 +20,7 @@ class Task {
   // Hàm chuyển đổi sang chuỗi lưu trữ trong SharedPreferences
   @override
   String toString() {
-    return '$id,$taskName,${assignedTo.join(",")},$startDate,$endDate,$status,$description';
+    return '$id,$taskName,${assignedTo.join(",")},${startDate.toIso8601String()},${endDate.toIso8601String()},$status,$description';
   }
 
   // Hàm chuyển từ chuỗi lưu trữ trong SharedPreferences thành Task

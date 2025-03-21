@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
-  final String title; // Thêm tham số title để thay đổi tiêu đề
+  final String title;
 
-  // Constructor nhận tham số title
   const CustomAppBar({super.key, required this.title})
     : preferredSize = const Size.fromHeight(56.0);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.blueAccent, // Màu nền của AppBar
+      backgroundColor: Colors.blueAccent,
       title: Text(
-        title, // Sử dụng title từ tham số
+        title,
         style: const TextStyle(
           color: Colors.white,
           fontSize: 20,

@@ -12,14 +12,14 @@ class EditEmployeeScreen extends StatefulWidget {
   });
 
   @override
-  State<EditEmployeeScreen> createState() => _EditEmployeeScreenState();
+  _EditEmployeeScreenState createState() => _EditEmployeeScreenState();
 }
 
 class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   late TextEditingController _fullNameController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
-  String? _contractType;
+  String _contractType = 'Full-time';
   List<String> _positions = [];
   final List<String> _availablePositions = [
     'BA',
@@ -49,82 +49,157 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Chỉnh sửa nhân viên')),
-      body: Padding(
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _fullNameController,
-              decoration: const InputDecoration(labelText: 'Họ và tên'),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Số điện thoại'),
-            ),
-            const SizedBox(height: 10),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            const SizedBox(height: 10),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(labelText: 'Loại hợp đồng'),
-              value: _contractType,
-              onChanged: (value) => setState(() => _contractType = value),
-              items:
-                  ['Full-time', 'Part-time', 'TTS']
-                      .map(
-                        (type) => DropdownMenuItem<String>(
-                          value: type,
-                          child: Text(type),
-                        ),
-                      )
-                      .toList(),
-            ),
-            const SizedBox(height: 10),
-            const Text('Vị trí:'),
-            Column(
-              children:
-                  _availablePositions.map((position) {
-                    return CheckboxListTile(
-                      title: Text(position),
-                      value: _positions.contains(position),
-                      onChanged: (bool? value) {
-                        setState(() {
-                          if (value == true) {
-                            _positions.add(position);
-                          } else {
-                            _positions.remove(position);
-                          }
-                        });
-                      },
-                    );
-                  }).toList(),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final updatedEmployee = Employee(
-                  id: widget.employee.id,
-                  fullName: _fullNameController.text,
-                  phone: _phoneController.text,
-                  email: _emailController.text,
-                  contractType: _contractType!,
-                  positions: _positions,
-                  createdAt: widget.employee.createdAt,
-                  updatedAt: DateTime.now(),
-                );
-                widget.onSave(updatedEmployee);
-                Navigator.pop(context);
-              },
-              child: const Text('Lưu'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: const Text(
+                  'Chỉnh sửa nhân viên',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              _buildTextField(_fullNameController, 'Họ và tên'),
+              const SizedBox(height: 15),
+              _buildTextField(_phoneController, 'Số điện thoại'),
+              const SizedBox(height: 15),
+              _buildTextField(_emailController, 'Email'),
+              const SizedBox(height: 15),
+
+              _buildDropdown(),
+              const SizedBox(height: 15),
+
+              const Text(
+                'Chọn vị trí:',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              _buildPositionSelection(),
+              const SizedBox(height: 20),
+
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                onPressed: () {
+                  final updatedEmployee = Employee(
+                    id: widget.employee.id,
+                    fullName: _fullNameController.text,
+                    phone: _phoneController.text,
+                    email: _emailController.text,
+                    contractType: _contractType,
+                    positions: _positions,
+                    createdAt: widget.employee.createdAt,
+                    updatedAt: DateTime.now(),
+                  );
+                  widget.onSave(updatedEmployee);
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Lưu nhân viên',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  // TextFormField cho các trường nhập liệu
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.blueAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blueAccent),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 18,
+        ),
+      ),
+    );
+  }
+
+  // Dropdown cho loại hợp đồng
+  Widget _buildDropdown() {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(
+        labelText: 'Loại hợp đồng',
+        labelStyle: TextStyle(color: Colors.blueAccent),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blueAccent),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2),
+        ),
+      ),
+      value: _contractType,
+      onChanged: (value) => setState(() => _contractType = value!),
+      items:
+          ['Full-time', 'Part-time', 'TTS']
+              .map(
+                (type) =>
+                    DropdownMenuItem<String>(value: type, child: Text(type)),
+              )
+              .toList(),
+    );
+  }
+
+  // Phần chọn vị trí sử dụng FilterChip
+  Widget _buildPositionSelection() {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children:
+          _availablePositions.map((position) {
+            return FilterChip(
+              label: Text(position),
+              selected: _positions.contains(position),
+              onSelected: (selected) {
+                setState(() {
+                  if (selected) {
+                    _positions.add(position);
+                  } else {
+                    _positions.remove(position);
+                  }
+                });
+              },
+              backgroundColor: Colors.grey[200],
+              selectedColor: Colors.blueAccent,
+              labelStyle: TextStyle(
+                color:
+                    _positions.contains(position) ? Colors.white : Colors.black,
+              ),
+            );
+          }).toList(),
     );
   }
 }
