@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlns/models/employee.dart';
-import 'package:qlns/screens/employee/EditEmployeeScreen.dart';
-import 'package:qlns/screens/employee/employeeDetailScreen.dart';
+import 'package:qlns/screens/employee/Edit_employee_screen.dart';
+import 'package:qlns/screens/employee/employee_detail_screen.dart';
 
 class EmployeeList extends StatefulWidget {
   final List<Employee> employees;

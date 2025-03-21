@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:qlns/models/task.dart';
+import 'package:qlns/screens/Task/task_management_screen.dart';
 import 'package:qlns/screens/employee/employee_screen.dart';
-import 'package:qlns/screens/homeScreen.dart';
-import 'package:qlns/screens/scheduleScreen.dart';
-import 'package:qlns/screens/taskScreen.dart';
+import 'package:qlns/screens/home_screen.dart';
+import 'package:qlns/screens/schedule_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -10,6 +11,27 @@ class RootScreen extends StatefulWidget {
   @override
   State<RootScreen> createState() => _RootScreenState();
 }
+
+List<Task> tasks = [
+  Task(
+    id: 1,
+    taskName: 'Phát triển tính năng A',
+    assignedTo: [], // Thêm nhân viên vào đây
+    startDate: DateTime.now(),
+    endDate: DateTime(2025, 12, 31),
+    status: 'Đang làm',
+    description: 'Mô tả công việc A',
+  ),
+  Task(
+    id: 2,
+    taskName: 'Kiểm thử tính năng B',
+    assignedTo: [], // Thêm nhân viên vào đây
+    startDate: DateTime.now(),
+    endDate: DateTime(2025, 12, 15),
+    status: 'Chưa bắt đầu',
+    description: 'Mô tả công việc B',
+  ),
+];
 
 class _RootScreenState extends State<RootScreen> {
   // Chỉ mục của mục đã chọn trong thanh điều hướng
@@ -19,7 +41,7 @@ class _RootScreenState extends State<RootScreen> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     EmployeeManagementScreen(),
-    TaskScreen(),
+    TaskManagementScreen(),
     ScheduleScreen(),
   ];
 

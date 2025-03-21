@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:qlns/apps/utils/customAppBar.dart';
+import 'package:qlns/apps/utils/custom_app_bar.dart';
 import 'package:qlns/apps/utils/search.dart';
-import 'package:qlns/screens/employee/add_employee_form.dart';
-import 'package:qlns/screens/employee/employee_list.dart';
 
 import 'package:qlns/apps/utils/employee_storage.dart';
 import 'package:qlns/models/employee.dart';
+import 'package:qlns/screens/employee/add_employee_form.dart';
+import 'package:qlns/screens/employee/employee_list.dart';
 
 class EmployeeManagementScreen extends StatefulWidget {
   const EmployeeManagementScreen({super.key});
@@ -112,8 +112,31 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addEmployee,
-        backgroundColor: Colors.blueAccent,
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.blueAccent, // Màu nền của nút
+        elevation: 8, // Bóng đổ để tạo hiệu ứng nổi
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30), // Bo tròn cho nút
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue,
+                Colors.blueAccent,
+              ], // Tạo hiệu ứng gradient mượt mà
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(
+              30,
+            ), // Bo tròn với cùng kích thước như shape
+          ),
+          child: Icon(
+            Icons.add,
+            size: 40, // Kích thước biểu tượng lớn hơn, dễ nhận diện
+            color: Colors.white, // Màu sắc biểu tượng nổi bật
+          ),
+        ),
       ),
     );
   }
