@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qlns/models/employee.dart';
-import 'package:qlns/screens/employeeDetailScreen.dart';
+import 'package:qlns/screens/employee/EditEmployeeScreen.dart';
+import 'package:qlns/screens/employee/employeeDetailScreen.dart';
 
-class EmployeeList extends StatelessWidget {
+class EmployeeList extends StatefulWidget {
   final List<Employee> employees;
   final Function(int) onDelete;
 
@@ -13,17 +14,22 @@ class EmployeeList extends StatelessWidget {
   });
 
   @override
+  State<EmployeeList> createState() => _EmployeeListState();
+}
+
+class _EmployeeListState extends State<EmployeeList> {
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
           children:
-              employees.map((employee) {
+              widget.employees.map((employee) {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  elevation: 5, // Shadow for Card
+                  elevation: 5,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // Rounded corners
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
                     contentPadding: const EdgeInsets.symmetric(
@@ -34,27 +40,45 @@ class EmployeeList extends StatelessWidget {
                       employee.fullName,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.blueAccent, // Customize the name color
+                        color: Colors.blueAccent,
                       ),
                     ),
                     subtitle: Text(
                       'Email: ${employee.email}\nSố điện thoại: ${employee.phone}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color:
-                            Colors
-                                .grey[600], // Light grey text for the subtitle
-                      ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
                     ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
+                      children: [
                         IconButton(
                           icon: const Icon(
                             Icons.edit,
                             color: Colors.blueAccent,
                           ),
                           onPressed: () {
-                            // Implement edit action
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) => EditEmployeeScreen(
+                                      employee: employee,
+                                      onSave: (updatedEmployee) {
+                                        setState(() {
+                                          int index = widget.employees
+                                              .indexWhere(
+                                                (e) =>
+                                                    e.id == updatedEmployee.id,
+                                              );
+                                          if (index != -1)
+                                            widget.employees[index] =
+                                                updatedEmployee;
+                                        });
+                                      },
+                                    ),
+                              ),
+                            );
                           },
                         ),
                         IconButton(
@@ -62,12 +86,11 @@ class EmployeeList extends StatelessWidget {
                             Icons.delete,
                             color: Colors.redAccent,
                           ),
-                          onPressed: () => onDelete(employee.id),
+                          onPressed: () => widget.onDelete(employee.id),
                         ),
                       ],
                     ),
                     onTap: () {
-                      // Navigate to Employee Detail Screen with custom animation
                       Navigator.push(
                         context,
                         MaterialPageRoute(

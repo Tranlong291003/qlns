@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qlns/apps/utils/customAppBar.dart';
 import 'package:qlns/apps/utils/search.dart';
-import 'package:qlns/widgets/Employee/add_employee_form.dart';
-import 'package:qlns/widgets/Employee/employee_list.dart';
+import 'package:qlns/screens/employee/add_employee_form.dart';
+import 'package:qlns/screens/employee/employee_list.dart';
+
 import 'package:qlns/apps/utils/employee_storage.dart';
 import 'package:qlns/models/employee.dart';
 
@@ -16,24 +17,23 @@ class EmployeeManagementScreen extends StatefulWidget {
 
 class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
   List<Employee> employees = [];
-  List<Employee> filteredEmployees = []; // Lưu trữ danh sách đã lọc
+  List<Employee> filteredEmployees = [];
   String searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _loadEmployees(); // Tải dữ liệu nhân viên khi màn hình khởi tạo
+    _loadEmployees();
   }
 
   Future<void> _loadEmployees() async {
     final loadedEmployees = await EmployeeStorage.loadEmployees();
     setState(() {
       employees = loadedEmployees;
-      filteredEmployees = employees; // Ban đầu, hiển thị tất cả nhân viên
+      filteredEmployees = employees;
     });
   }
 
-  // Hàm lọc nhân viên theo tên và vị trí
   void _onSearchChanged(String value) {
     setState(() {
       searchQuery = value;
@@ -51,51 +51,44 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
     });
   }
 
-  // Xóa nhân viên
   void _deleteEmployee(int id) async {
     setState(() {
       employees.removeWhere((employee) => employee.id == id);
-      filteredEmployees.removeWhere(
-        (employee) => employee.id == id,
-      ); // Cập nhật danh sách đã lọc
+      filteredEmployees.removeWhere((employee) => employee.id == id);
     });
-    await EmployeeStorage.saveEmployees(employees); // Lưu lại sau khi xóa
+    await EmployeeStorage.saveEmployees(employees);
   }
 
-  // Mở Dialog để thêm nhân viên
   void _addEmployee() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AddEmployeeForm(
           onSave: (newEmployee) async {
+            // Kiểm tra trùng lặp ID
+            bool isDuplicate = employees.any((e) => e.id == newEmployee.id);
+            if (isDuplicate) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Nhân viên này đã tồn tại!')),
+              );
+              return;
+            }
             setState(() {
               employees.add(newEmployee);
-              filteredEmployees.add(newEmployee); // Cập nhật danh sách đã lọc
+              filteredEmployees = List.from(
+                employees,
+              ); // Đồng bộ filteredEmployees với employees
             });
-            await EmployeeStorage.saveEmployees(
-              employees,
-            ); // Lưu danh sách sau khi thêm
+
+            // Lưu danh sách nhân viên vào storage
+            await EmployeeStorage.saveEmployees(employees);
+
+            // Đóng dialog sau khi lưu
             Navigator.pop(context);
           },
         );
       },
     );
-  }
-
-  // Hàm chỉnh sửa nhân viên
-  void _editEmployee(Employee updatedEmployee) async {
-    setState(() {
-      // Cập nhật nhân viên trong danh sách
-      final index = employees.indexWhere(
-        (employee) => employee.id == updatedEmployee.id,
-      );
-      if (index != -1) {
-        employees[index] = updatedEmployee;
-        filteredEmployees[index] = updatedEmployee; // Cập nhật danh sách đã lọc
-      }
-    });
-    await EmployeeStorage.saveEmployees(employees); // Lưu lại sau khi chỉnh sửa
   }
 
   @override
@@ -106,11 +99,11 @@ class _EmployeeManagementScreenState extends State<EmployeeManagementScreen> {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            search(context, _onSearchChanged), // Thanh tìm kiếm
+            search(context, _onSearchChanged), // Tìm kiếm nhân viên
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: EmployeeList(
-                employees: filteredEmployees, // Hiển thị danh sách đã lọc
+                employees: filteredEmployees,
                 onDelete: _deleteEmployee,
               ),
             ),

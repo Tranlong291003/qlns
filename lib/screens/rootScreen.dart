@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlns/screens/employee_screen.dart';
+import 'package:qlns/screens/employee/employee_screen.dart';
 import 'package:qlns/screens/homeScreen.dart';
 import 'package:qlns/screens/scheduleScreen.dart';
 import 'package:qlns/screens/taskScreen.dart';

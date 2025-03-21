@@ -19,7 +19,6 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   late TextEditingController _fullNameController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
-
   String? _contractType;
   List<String> _positions = [];
   final List<String> _availablePositions = [
@@ -37,7 +36,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     _phoneController = TextEditingController(text: widget.employee.phone);
     _emailController = TextEditingController(text: widget.employee.email);
     _contractType = widget.employee.contractType;
-    _positions = List.from(widget.employee.positions); // Copying positions list
+    _positions = List.from(widget.employee.positions);
   }
 
   @override
@@ -55,8 +54,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
+          children: [
             TextFormField(
               controller: _fullNameController,
               decoration: const InputDecoration(labelText: 'Họ và tên'),
@@ -75,11 +73,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Loại hợp đồng'),
               value: _contractType,
-              onChanged: (value) {
-                setState(() {
-                  _contractType = value;
-                });
-              },
+              onChanged: (value) => setState(() => _contractType = value),
               items:
                   ['Full-time', 'Part-time', 'TTS']
                       .map(
@@ -91,7 +85,6 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                       .toList(),
             ),
             const SizedBox(height: 10),
-            // Multi-Select Positions using Checkboxes
             const Text('Vị trí:'),
             Column(
               children:
@@ -114,9 +107,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Cập nhật thông tin nhân viên
                 final updatedEmployee = Employee(
-                  id: widget.employee.id, // Giữ nguyên ID
+                  id: widget.employee.id,
                   fullName: _fullNameController.text,
                   phone: _phoneController.text,
                   email: _emailController.text,
@@ -125,11 +117,8 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                   createdAt: widget.employee.createdAt,
                   updatedAt: DateTime.now(),
                 );
-
-                widget.onSave(
-                  updatedEmployee,
-                ); // Ensure this is called correctly
-                Navigator.pop(context); // Close the screen after saving
+                widget.onSave(updatedEmployee);
+                Navigator.pop(context);
               },
               child: const Text('Lưu'),
             ),

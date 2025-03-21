@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qlns/models/employee.dart';
 
 class AddEmployeeForm extends StatefulWidget {
@@ -23,6 +24,25 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     'Tester',
     'DevOps',
   ];
+  int _nextId = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNextId();
+  }
+
+  _loadNextId() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nextId = prefs.getInt('nextId') ?? 1;
+    });
+  }
+
+  _saveNextId() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('nextId', _nextId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +80,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(labelText: 'Loại hợp đồng'),
                 value: _contractType,
-                onChanged: (value) {
-                  setState(() {
-                    _contractType = value!;
-                  });
-                },
+                onChanged: (value) => setState(() => _contractType = value!),
                 items:
                     ['Full-time', 'Part-time', 'TTS']
                         .map(
@@ -76,7 +92,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                         .toList(),
               ),
               const SizedBox(height: 10),
-              // Multiple selection for positions
               const Text(
                 'Chọn vị trí:',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -88,9 +103,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                   onChanged: (bool? selected) {
                     setState(() {
                       if (selected == true) {
-                        if (!_positions.contains(position)) {
+                        if (!_positions.contains(position))
                           _positions.add(position);
-                        }
                       } else {
                         _positions.remove(position);
                       }
@@ -102,7 +116,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               ElevatedButton(
                 onPressed: () {
                   final newEmployee = Employee(
-                    id: DateTime.now().millisecondsSinceEpoch, // Fake ID
+                    id: _nextId++,
                     fullName: _fullNameController.text,
                     phone: _phoneController.text,
                     email: _emailController.text,
@@ -111,8 +125,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                     createdAt: DateTime.now(),
                     updatedAt: DateTime.now(),
                   );
-
-                  widget.onSave(newEmployee); // Callback to save the employee
+                  widget.onSave(newEmployee);
+                  _saveNextId();
                 },
                 child: const Center(child: Text('Lưu nhân viên')),
               ),
