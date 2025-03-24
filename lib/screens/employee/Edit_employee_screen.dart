@@ -50,74 +50,69 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Center(
-                child: const Text(
-                  'Chỉnh sửa nhân viên',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                  ),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Center(
+              child: const Text(
+                'Chỉnh sửa nhân viên',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueAccent,
                 ),
               ),
-              const SizedBox(height: 20),
+            ),
+            const SizedBox(height: 20),
 
-              _buildTextField(_fullNameController, 'Họ và tên'),
-              const SizedBox(height: 15),
-              _buildTextField(_phoneController, 'Số điện thoại'),
-              const SizedBox(height: 15),
-              _buildTextField(_emailController, 'Email'),
-              const SizedBox(height: 15),
+            _buildTextField(_fullNameController, 'Họ và tên'),
+            const SizedBox(height: 15),
+            _buildTextField(_phoneController, 'Số điện thoại'),
+            const SizedBox(height: 15),
+            _buildTextField(_emailController, 'Email'),
+            const SizedBox(height: 15),
 
-              _buildDropdown(),
-              const SizedBox(height: 15),
+            _buildDropdown(),
+            const SizedBox(height: 15),
 
-              const Text(
-                'Chọn vị trí:',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 5),
-              _buildPositionSelection(),
-              const SizedBox(height: 20),
+            const Text(
+              'Chọn vị trí:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            _buildPositionSelection(),
+            const SizedBox(height: 20),
 
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  minimumSize: const Size(double.infinity, 50),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                onPressed: () {
-                  final updatedEmployee = Employee(
-                    id: widget.employee.id,
-                    fullName: _fullNameController.text,
-                    phone: _phoneController.text,
-                    email: _emailController.text,
-                    contractType: _contractType,
-                    positions: _positions,
-                    createdAt: widget.employee.createdAt,
-                    updatedAt: DateTime.now(),
-                  );
-                  widget.onSave(updatedEmployee);
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Lưu nhân viên',
-                  style: TextStyle(fontSize: 18),
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                minimumSize: const Size(double.infinity, 50),
               ),
-            ],
-          ),
+              onPressed: () {
+                final updatedEmployee = Employee(
+                  id: widget.employee.id,
+                  fullName: _fullNameController.text,
+                  phone: _phoneController.text,
+                  email: _emailController.text,
+                  contractType: _contractType,
+                  positions: _positions,
+                  createdAt: widget.employee.createdAt,
+                  updatedAt: DateTime.now(),
+                );
+                widget.onSave(updatedEmployee);
+              },
+              child: const Text(
+                'Lưu nhân viên',
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              ),
+            ),
+          ],
         ),
       ),
     );

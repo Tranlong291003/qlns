@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "22852169711",
+    "project_id": "qlns-trueconnect-162cd",
+    "storage_bucket": "qlns-trueconnect-162cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22852169711:android:4c9cfcabaf62194620101a",
+        "android_client_info": {
+          "package_name": "com.example.qlns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22852169711-dbcp56340ctar8qmfauvvvkk2lld8tkc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoSOh2CrH4TJ22f1kVKIErHJW_Yp-0RWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22852169711-dbcp56340ctar8qmfauvvvkk2lld8tkc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

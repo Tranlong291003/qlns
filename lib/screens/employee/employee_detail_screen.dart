@@ -8,92 +8,98 @@ class EmployeeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chi tiết nhân sự'),
-        backgroundColor: Colors.blueAccent,
-        elevation: 0,
-      ),
-      body: Dialog(
+    return SizedBox(
+      height: 430,
+      child: Dialog(
+        backgroundColor: Colors.white, // Màu nền cho Dialog
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15), // Viền bo tròn cho Dialog
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Họ và tên:',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                    Text(
-                      employee.fullName,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    _buildDetailRow('Email:', employee.email),
-                    _buildDetailRow('Số điện thoại:', employee.phone),
-                    _buildDetailRow('Loại hợp đồng:', employee.contractType),
-                    _buildDetailRow('Vị trí:', employee.positions.join(', ')),
-                    const SizedBox(height: 20),
-                    _buildDetailRow(
-                      'Ngày tạo:',
-                      _formatDate(employee.createdAt),
-                    ),
-                    _buildDetailRow(
-                      'Ngày cập nhật:',
-                      _formatDate(employee.updatedAt),
-                    ),
-                  ],
+          padding: const EdgeInsets.all(12.0), // Thêm padding cho dialog
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Tiêu đề
+              Center(
+                child: Text(
+                  'Thông tin nhân viên',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent,
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 20),
+
+              // Card cho từng mục thông tin
+              _buildInfoRow('Họ và tên:', employee.fullName),
+              const SizedBox(height: 10),
+              _buildInfoRow('Email:', employee.email),
+              _buildInfoRow('Số điện thoại:', employee.phone),
+              _buildInfoRow('Loại hợp đồng:', employee.contractType),
+              _buildInfoRow('Vị trí:', employee.positions.join(', ')),
+              const SizedBox(height: 20),
+              _buildInfoRow('Ngày tạo:', _formatDate(employee.createdAt)),
+              _buildInfoRow('Ngày cập nhật:', _formatDate(employee.updatedAt)),
+
+              const SizedBox(height: 20),
+              // Nút Đóng Dialog
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Đóng dialog khi nhấn vào nút
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent, // Nền màu xanh
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 30,
+                    ),
+                  ),
+                  child: const Text(
+                    'Đóng',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  // Widget để hiển thị các thông tin dạng row
-  Widget _buildDetailRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: Row(
-        children: [
-          Text(
-            '$title ',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600],
-            ),
-          ),
-          Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-            ),
-          ),
-        ],
-      ),
-    );
+  // Helper function to format the date
+  String _formatDate(DateTime date) {
+    return '${date.day}/${date.month}/${date.year}'; // Chỉ lấy ngày, tháng, năm
   }
 
-  // Hàm định dạng ngày
-  String _formatDate(DateTime dateTime) {
-    return '${dateTime.day}-${dateTime.month}-${dateTime.year} ${dateTime.hour}:${dateTime.minute}';
+  // Helper function to build info rows
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(fontSize: 16, color: Colors.black54),
+          ),
+        ),
+      ],
+    );
   }
 }

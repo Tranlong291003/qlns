@@ -11,6 +11,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false, // Ẩn nút quay lại
+
       backgroundColor: Colors.blueAccent,
       title: Text(
         title,
