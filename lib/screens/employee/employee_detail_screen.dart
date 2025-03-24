@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlns/apps/utils/box_details.dart';
 import 'package:qlns/models/employee.dart';
 
 class EmployeeDetailScreen extends StatelessWidget {
@@ -8,62 +9,78 @@ class EmployeeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 430,
-      child: Dialog(
-        backgroundColor: Colors.white, // Màu nền cho Dialog
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15), // Viền bo tròn cho Dialog
-        ),
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: SizedBox(
         child: Padding(
-          padding: const EdgeInsets.all(12.0), // Thêm padding cho dialog
+          padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Tiêu đề
-              Center(
-                child: Text(
-                  'Thông tin nhân viên',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
-                  ),
+              // Ảnh đại diện + tên
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage(
+                  'assets/images/avatar.png',
+                ), // ảnh local hoặc thay NetworkImage
+              ),
+              const SizedBox(height: 10),
+              Text(
+                employee.fullName,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
 
-              // Card cho từng mục thông tin
-              _buildInfoRow('Họ và tên:', employee.fullName),
-              const SizedBox(height: 10),
-              _buildInfoRow('Email:', employee.email),
-              _buildInfoRow('Số điện thoại:', employee.phone),
-              _buildInfoRow('Loại hợp đồng:', employee.contractType),
-              _buildInfoRow('Vị trí:', employee.positions.join(', ')),
-              const SizedBox(height: 20),
-              _buildInfoRow('Ngày tạo:', _formatDate(employee.createdAt)),
-              _buildInfoRow('Ngày cập nhật:', _formatDate(employee.updatedAt)),
+              // Các dòng thông tin
+              Expanded(
+                child: ListView(
+                  children: [
+                    buildInfoTile(Icons.email, 'Email', employee.email),
+                    buildInfoTile(Icons.phone, 'Số điện thoại', employee.phone),
+                    buildInfoTile(
+                      Icons.assignment,
+                      'Loại hợp đồng',
+                      employee.contractType,
+                    ),
+                    buildInfoTile(
+                      Icons.work_outline,
+                      'Vị trí',
+                      employee.positions.join(', '),
+                    ),
+                    buildInfoTile(
+                      Icons.calendar_today,
+                      'Ngày tạo',
+                      _formatDate(employee.createdAt),
+                    ),
+                    buildInfoTile(
+                      Icons.update,
+                      'Ngày cập nhật',
+                      _formatDate(employee.updatedAt),
+                    ),
+                  ],
+                ),
+              ),
 
-              const SizedBox(height: 20),
-              // Nút Đóng Dialog
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context); // Đóng dialog khi nhấn vào nút
-                  },
+              const SizedBox(height: 16),
+
+              // Nút Đóng
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close),
+                  label: const Text('Đóng'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent, // Nền màu xanh
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 12,
-                      horizontal: 30,
-                    ),
-                  ),
-                  child: const Text(
-                    'Đóng',
-                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -74,32 +91,7 @@ class EmployeeDetailScreen extends StatelessWidget {
     );
   }
 
-  // Helper function to format the date
   String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}'; // Chỉ lấy ngày, tháng, năm
-  }
-
-  // Helper function to build info rows
-  Widget _buildInfoRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        Flexible(
-          child: Text(
-            value,
-            textAlign: TextAlign.end,
-            style: TextStyle(fontSize: 16, color: Colors.black54),
-          ),
-        ),
-      ],
-    );
+    return '${date.day}/${date.month}/${date.year}';
   }
 }

@@ -3,7 +3,7 @@ import 'package:qlns/models/task.dart';
 import 'package:qlns/screens/Task/task_management_screen.dart';
 import 'package:qlns/screens/employee/employee_screen.dart';
 import 'package:qlns/screens/home_screen.dart';
-import 'package:qlns/screens/schedule_screen.dart';
+import 'package:qlns/screens/schedule/schedule_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({super.key});
@@ -57,27 +57,44 @@ class _RootScreenState extends State<RootScreen> {
     return Scaffold(
       body:
           _widgetOptions[_selectedIndex], // Hiển thị trang tương ứng với mục đã chọn
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex, // Chỉ mục hiện tại
-        onTap: _onItemTapped, // Gọi hàm khi chọn mục
-        selectedItemColor: Colors.blue, // Màu của mục đã chọn
-        unselectedItemColor: Colors.grey, // Màu của mục chưa chọn
-        backgroundColor: Colors.white, // Màu nền của BottomNavigationBar
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_people_outlined),
-            label: 'Nhân sự',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: const Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 209, 209, 209), // Màu viền
+              width: 2.0, // Độ dày viền
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.task_alt),
-            label: 'Công việc',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            label: 'Lịch làm việc',
-          ),
-        ],
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(31, 231, 228, 228),
+              blurRadius: 4,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.white,
+          type: BottomNavigationBarType.fixed, // để tránh nhấp nháy
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chủ'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.emoji_people_outlined),
+              label: 'Nhân sự',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.task_alt),
+              label: 'Công việc',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.schedule),
+              label: 'Lịch làm việc',
+            ),
+          ],
+        ),
       ),
     );
   }

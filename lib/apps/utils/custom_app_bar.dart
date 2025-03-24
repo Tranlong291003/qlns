@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlns/screens/setting_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -32,7 +33,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: () {
-            print('Cài đặt');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingScreen()),
+            );
           },
         ),
       ],

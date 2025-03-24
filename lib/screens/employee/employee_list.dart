@@ -56,11 +56,7 @@ class _EmployeeListState extends State<EmployeeList> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          child: EmployeeDetailScreen(
-            employee: employee,
-          ), // Use EmployeeDetailScreen here
-        );
+        return EmployeeDetailScreen(employee: employee);
       },
     );
   }

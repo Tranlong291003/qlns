@@ -2,8 +2,9 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
-    id("com.google.gms.google-services")  // Đảm bảo plugin google-services được khai báo ở đây
+    id("com.google.gms.google-services") // plugin thì chỉ để "id"
 }
+
 
 dependencies {
   // Import the Firebase BoM
@@ -41,6 +42,15 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+    dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    
+    // ✅ Thêm ở đây, không phải trong plugins
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth")
+}
+
 
     buildFeatures {
         buildConfig = true  
